@@ -23,7 +23,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     overflow:hidden;
 }
 
-/* === Погода (только в меню) === */
 #weatherLayer {
     position:absolute; inset:0; pointer-events:none; overflow:hidden;
     z-index:1;
@@ -63,7 +62,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     100% { transform: translate3d(100vw,0,0); }
 }
 
-/* === МЕНЮ === */
 #menu {
     position:absolute; inset:0; z-index:100;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -100,6 +98,7 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
 .lang-btn:hover, .icon-top-btn:hover { background:rgba(50,75,100,.95); }
 .lang-btn:active, .icon-top-btn:active { transform:scale(.95); }
 .lang-btn.active { background:#2b6a9e; border-color:#4084bf; color:#fff; }
+.icon-top-btn.active { background:#2b6a9e; border-color:#4084bf; color:#fff; }
 
 .menu-title {
     font-size:clamp(38px,12vw,60px); font-weight:900; letter-spacing:-2px;
@@ -181,7 +180,19 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
 .atmo-btn:active:not(:disabled) { transform:scale(.95); }
 .atmo-btn:disabled { opacity:.35; cursor:not-allowed; filter:grayscale(.7); }
 
-/* === ИГРА === */
+.bottom-links {
+    display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; justify-content:center;
+}
+.bottom-link {
+    background:rgba(30,45,60,.7); border:1px solid rgba(70,100,140,.4);
+    color:#9bbad9; padding:6px 14px; border-radius:20px;
+    font-size:11px; font-weight:600; cursor:pointer; transition:.2s;
+    -webkit-tap-highlight-color:transparent;
+    display:flex; align-items:center; gap:5px;
+}
+.bottom-link:hover { background:rgba(50,75,100,.9); color:#c8ddf0; }
+.bottom-link:active { transform:scale(.95); }
+
 #game {
     position:absolute; inset:0; z-index:10;
     display:none; flex-direction:column;
@@ -195,7 +206,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     padding:10px 14px;
     background:rgba(15,24,34,.9);
     border-bottom:1px solid rgba(40,60,90,.6);
-    /* УБРАН backdrop-filter — тяжёлый на слабых устройствах */
     z-index:20;
     flex-shrink:0;
 }
@@ -210,6 +220,7 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     -webkit-tap-highlight-color:transparent;
 }
 .icon-btn:active { transform:scale(.92); background:rgba(50,75,100,.9); }
+.icon-btn.active { background:#2b6a9e; border-color:#4084bf; color:#fff; }
 
 .board-wrap {
     flex:1; display:flex; align-items:center; justify-content:center;
@@ -218,13 +229,11 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
 }
 #board {
     display:grid; gap:2px; padding:6px; border-radius:14px;
-    /* УПРОЩЁН фон: один статичный слой вместо трёх */
     background:rgba(10,16,24,.8);
     box-shadow: 0 0 40px rgba(0,0,0,.6);
     border:1px solid rgba(60,90,130,.5);
     position:relative;
     touch-action:none;
-    /* Изоляция для оптимизации */
     contain: layout paint;
 }
 .cell {
@@ -239,7 +248,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     box-shadow: inset 0 0 0 2px rgba(140,200,255,.9);
 }
 
-/* === КРИСТАЛЛЫ === */
 .crystal {
     width:88%; height:88%; position:relative;
     transition: transform .25s cubic-bezier(.34,1.56,.64,1), opacity .25s ease;
@@ -247,8 +255,9 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     background-position:center;
     background-repeat:no-repeat;
     display:flex; align-items:center; justify-content:center;
+    will-change: auto;
 }
-/* Свечение — только ОДНА тень (в 2 раза легче) */
+.crystal.animating { will-change: transform; }
 .crystal.lit { filter: drop-shadow(0 0 8px var(--glow)); }
 .crystal.lit-bright { filter: drop-shadow(0 0 10px var(--glow)) drop-shadow(0 0 20px var(--glow)); }
 
@@ -258,7 +267,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     50% { transform:scale(1.18); filter:brightness(1.6) drop-shadow(0 0 20px var(--glow, #fff)); }
 }
 
-/* === ФОРМЫ === */
 .shape-triangle { clip-path:polygon(50% 5%,95% 90%,5% 90%); }
 .shape-diamond { clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); }
 .shape-hexagon { clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0% 50%); }
@@ -267,8 +275,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
 .shape-star { clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); }
 .shape-pentagon { clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%); }
 .shape-octagon { clip-path:polygon(30% 0%,70% 0%,100% 30%,100% 70%,70% 100%,30% 100%,0% 70%,0% 30%); }
-
-/* НОВАЯ: капля для белого кристалла */
 .shape-drop {
     clip-path: polygon(
         50% 0%, 65% 15%, 78% 32%, 88% 50%, 92% 66%,
@@ -277,8 +283,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
         12% 50%, 22% 32%, 35% 15%
     );
 }
-
-/* НОВАЯ: вихрь для джокера */
 .shape-vortex {
     clip-path: polygon(
         50% 0%, 72% 18%, 88% 10%, 90% 38%,
@@ -298,7 +302,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
 .c-pink { background:linear-gradient(135deg,#ff7fb0,#e84393,#ffc0d8); --glow:#ff70a8; }
 .c-white { background:linear-gradient(135deg,#ffffff,#e0e2ea,#ffffff); --glow:#ffffff; }
 
-/* Внутренний блик */
 .crystal::before {
     content:''; position:absolute; inset:0;
     border-radius:inherit;
@@ -311,7 +314,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
 .shape-circle.crystal::before { border-radius:50%; }
 .shape-square.crystal::before { border-radius:18%; }
 
-/* === ТЕКСТУРЫ === */
 .crystal.has-texture {
     background:transparent !important;
     background-image:var(--texture) !important;
@@ -319,24 +321,12 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     background-position:center !important;
     background-repeat:no-repeat !important;
 }
-.crystal.has-texture.shape-drop {
-    background-size:78% 78% !important;
-}
-.crystal.has-texture.shape-vortex {
-    background-size:82% 82% !important;
-}
-.crystal.has-texture.shape-triangle {
-    background-size:82% 82% !important;
-    background-position:center 60% !important;
-}
-.crystal.has-texture.shape-star {
-    background-size:85% 85% !important;
-}
-.crystal.has-texture.shape-diamond {
-    background-size:82% 82% !important;
-}
+.crystal.has-texture.shape-drop { background-size:78% 78% !important; }
+.crystal.has-texture.shape-vortex { background-size:82% 82% !important; }
+.crystal.has-texture.shape-triangle { background-size:82% 82% !important; background-position:center 60% !important; }
+.crystal.has-texture.shape-star { background-size:85% 85% !important; }
+.crystal.has-texture.shape-diamond { background-size:82% 82% !important; }
 
-/* === БОМБА === */
 .crystal.bomb { animation:bombFloat 1.8s ease-in-out infinite; }
 .crystal.bomb::after {
     content:'💥'; position:absolute; inset:0;
@@ -356,8 +346,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     0%,100% { transform:scale(1); filter:brightness(1); }
     50% { transform:scale(1.2); filter:brightness(1.6); }
 }
-
-/* === ДЖОКЕР — теперь вихрь === */
 .crystal.joker {
     background:linear-gradient(135deg,#ffdd59,#ff6b9d,#a55eea,#70e6ff,#2ed573,#ffdd59);
     background-size:400% 400%;
@@ -376,7 +364,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     50% { filter:brightness(1.4) drop-shadow(0 0 20px #a55eea); }
 }
 
-/* === КАМНИ === */
 .crystal.stone {
     background:linear-gradient(135deg,#6a6a6a,#2a2a2a,#5a5a5a);
     clip-path:polygon(20% 10%,80% 0%,100% 40%,90% 90%,30% 100%,0% 70%,5% 25%);
@@ -397,7 +384,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
 .crystal.stone.has-texture::before,
 .crystal.stone.has-texture::after { display:none; }
 
-/* === АНИМАЦИИ === */
 .crystal.pop { animation:popOut .45s cubic-bezier(.34,1.56,.64,1) forwards; }
 @keyframes popOut {
     0% { transform:scale(1) rotate(0deg); opacity:1; }
@@ -424,7 +410,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     box-shadow:inset 0 0 0 2px rgba(140,200,255,.7);
 }
 
-/* === ЭФФЕКТЫ === */
 .explosion-particle {
     position:absolute; width:10px; height:10px; border-radius:50%;
     pointer-events:none; z-index:50;
@@ -494,7 +479,6 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     100% { opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
 }
 
-/* === МОДАЛКА === */
 .modal-overlay {
     position:fixed; inset:0; z-index:500;
     background:rgba(0,0,0,.85);
@@ -571,6 +555,42 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
 }
 .modal-close:hover { background:rgba(50,75,100,.3); }
 
+.changelog-list {
+    list-style:none; display:flex; flex-direction:column; gap:16px;
+}
+.changelog-version {
+    background:rgba(10,16,24,.6); border-radius:16px; padding:14px 16px;
+    border:1px solid rgba(60,80,110,.5);
+    border-left:3px solid #4084bf;
+}
+.changelog-version.latest { border-left-color:#2ed573; }
+.changelog-header {
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:8px; flex-wrap:wrap; gap:6px;
+}
+.changelog-ver {
+    color:#d6e6ff; font-size:15px; font-weight:800;
+    letter-spacing:.3px;
+}
+.changelog-ver.latest::after {
+    content:' • LATEST'; color:#2ed573; font-size:10px; font-weight:700;
+    margin-left:6px;
+}
+.changelog-date { color:#5b7897; font-size:11px; }
+.changelog-items {
+    list-style:none; display:flex; flex-direction:column; gap:6px;
+}
+.changelog-items li {
+    color:#9bbad9; font-size:12px; line-height:1.5;
+    padding-left:18px; position:relative;
+}
+.changelog-items li::before {
+    content:'▸'; position:absolute; left:2px; color:#4084bf;
+}
+.changelog-items li.feat::before { content:'✨'; }
+.changelog-items li.fix::before { content:'🔧'; }
+.changelog-items li.perf::before { content:'⚡'; }
+
 @media (max-width:480px) {
     .game-header { padding:8px 10px; }
     .score-display { font-size:13px; }
@@ -580,6 +600,8 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
     .menu-stats { font-size:11px; padding:8px 14px; }
     .lang-btn { font-size:11px; padding:5px 10px; }
     .texture-grid { grid-template-columns:repeat(3, 1fr); }
+    .changelog-ver { font-size:13px; }
+    .changelog-items li { font-size:11px; }
 }
 </style>
 </head>
@@ -593,6 +615,7 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
         <div class="menu-top-bar">
             <button class="lang-btn active" data-lang="ru">RU</button>
             <button class="lang-btn" data-lang="en">EN</button>
+            <button class="icon-top-btn" id="btnMusic" title="Музыка">🎵</button>
             <button class="icon-top-btn" id="btnTextures" title="Текстуры">🎨</button>
         </div>
         <div class="menu-content">
@@ -631,6 +654,10 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
                 <span class="time-name" id="timeLabel">День</span> ·
                 <span class="weather-name" id="weatherLabel">Ясно</span>
             </div>
+
+            <div class="bottom-links">
+                <button class="bottom-link" id="btnChangelog">📜 <span data-i18n="changelogBtn">Обновления</span></button>
+            </div>
         </div>
     </div>
 
@@ -642,6 +669,7 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
             </div>
             <div class="game-buttons">
                 <button class="icon-btn" id="btnHint" data-i18n-title="hintTitle" title="Подсказка">💡</button>
+                <button class="icon-btn" id="btnMusicGame" title="Музыка">🎵</button>
                 <button class="icon-btn" id="btnMenu" data-i18n-title="menuTitle" title="Меню">☰</button>
             </div>
         </div>
@@ -669,6 +697,16 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
             <button class="modal-close" id="btnCloseModal" data-i18n="close">Закрыть</button>
         </div>
     </div>
+
+    <div class="modal-overlay" id="changelogModal">
+        <div class="modal">
+            <h2 data-i18n="changelogTitle">История обновлений</h2>
+            <div class="modal-sub" data-i18n="changelogSub">Что нового в Crystalz</div>
+            <ul class="changelog-list" id="changelogList"></ul>
+            <button class="modal-close" id="btnCloseChangelog" data-i18n="close" style="margin-top:18px;">Закрыть</button>
+        </div>
+    </div>
+
     <input type="file" id="fileInputTexture" accept="image/png,image/jpeg" style="display:none">
     <input type="file" id="fileInputJSON" accept="application/json,.json" style="display:none">
 </div>
@@ -676,6 +714,68 @@ body.season-autumn { background: linear-gradient(160deg,#1a0e05 0%,#3a2010 50%,#
 <script>
 (function(){
 'use strict';
+
+// ============================================================
+//  CHANGELOG
+// ============================================================
+const CHANGELOG = [
+    {
+        version: '1.3.1',
+        date: '2026-09-13',
+        latest: true,
+        items: [
+            { type: 'fix',  text: 'Джокер теперь корректно меняет текстуру при создании' },
+            { type: 'feat', text: 'Новая музыка — мажорная, колокольчиковая, приятная' },
+            { type: 'feat', text: 'Плавные переходы и аккомпанемент в музыке' },
+        ],
+    },
+    {
+        version: '1.3.0',
+        date: '2026-09-13',
+        items: [
+            { type: 'feat', text: 'Фоновая музыка (Web Audio API, синтез без файлов)' },
+            { type: 'feat', text: 'Кнопка вкл/выкл музыки в меню и игре' },
+            { type: 'feat', text: 'История обновлений в меню' },
+            { type: 'fix',  text: 'Исправлена анимация свайпа кристаллов' },
+            { type: 'perf', text: 'Оптимизация: точечное обновление клеток' },
+        ],
+    },
+    {
+        version: '1.2.0',
+        date: '2026-09-13',
+        items: [
+            { type: 'feat', text: 'Новые формы: белый — капля, джокер — вихрь' },
+            { type: 'feat', text: 'Бомба теперь взрывается только при участии в линии 3+' },
+            { type: 'feat', text: 'Текстуры для джокера и камня в редакторе' },
+            { type: 'perf', text: 'Убраны тяжёлые тени и backdrop-filter' },
+            { type: 'fix',  text: 'Исправлено слишком большое сердечко' },
+        ],
+    },
+    {
+        version: '1.1.0',
+        date: '2026-09-12',
+        items: [
+            { type: 'feat', text: 'Ручная смена сезона и погоды' },
+            { type: 'feat', text: 'Анимация логотипа (свечение, парение, перелив)' },
+            { type: 'feat', text: 'Рандомный спавн бомб и джокеров (2.5%)' },
+            { type: 'fix',  text: 'Снег только в зимнем сезоне' },
+            { type: 'fix',  text: 'Погода работает и в игре, и в меню' },
+        ],
+    },
+    {
+        version: '1.0.0',
+        date: '2026-09-12',
+        items: [
+            { type: 'feat', text: 'Первый релиз Crystalz' },
+            { type: 'feat', text: '9 кристаллов с уникальными формами' },
+            { type: 'feat', text: 'Механики: 4 → бомба, 5 → джокер' },
+            { type: 'feat', text: 'Два режима: классика и с камнями' },
+            { type: 'feat', text: 'Редактор текстур с экспортом/импортом JSON' },
+            { type: 'feat', text: 'Локализация RU/EN' },
+            { type: 'feat', text: 'Сезоны, время суток, погода' },
+        ],
+    },
+];
 
 // ============================================================
 //  ЛОКАЛИЗАЦИЯ
@@ -701,6 +801,8 @@ const TRANSLATIONS = {
         toast_textureReset: '🗑 Текстуры сброшены',
         toast_textureExported: '📤 Текстуры экспортированы',
         toast_textureImported: '📥 Текстуры импортированы',
+        toast_musicOn: '🎵 Музыка включена',
+        toast_musicOff: '🔇 Музыка выключена',
         msg_reshuffle: '🔄 Нет ходов — перемешиваем...',
         texturesTitle: 'Текстуры',
         texturesSub: 'Загрузите PNG 512×512 для каждой плитки',
@@ -708,6 +810,9 @@ const TRANSLATIONS = {
         importTextures: '📥 Импорт JSON',
         resetTextures: '🗑 Сбросить все',
         close: 'Закрыть',
+        changelogBtn: 'Обновления',
+        changelogTitle: 'История обновлений',
+        changelogSub: 'Что нового в Crystalz',
     },
     en: {
         subtitle: 'Match 3',
@@ -726,6 +831,8 @@ const TRANSLATIONS = {
         toast_textureReset: '🗑 Textures reset',
         toast_textureExported: '📤 Textures exported',
         toast_textureImported: '📥 Textures imported',
+        toast_musicOn: '🎵 Music on',
+        toast_musicOff: '🔇 Music off',
         msg_reshuffle: '🔄 No moves — reshuffling...',
         texturesTitle: 'Textures',
         texturesSub: 'Upload PNG 512×512 for each tile',
@@ -733,6 +840,9 @@ const TRANSLATIONS = {
         importTextures: '📥 Import JSON',
         resetTextures: '🗑 Reset all',
         close: 'Close',
+        changelogBtn: 'Updates',
+        changelogTitle: 'Changelog',
+        changelogSub: 'What\'s new in Crystalz',
     }
 };
 
@@ -775,7 +885,6 @@ function loadLanguage(){
 const ROWS = 8;
 const COLS = 8;
 
-// 9 кристаллов. Белый теперь DROP (капля), а не HEART
 const CRYSTALS = [
     { color:'red',    shape:'triangle', css:'c-red',    name:'Красный' },
     { color:'orange', shape:'diamond',  css:'c-orange', name:'Оранжевый' },
@@ -785,12 +894,10 @@ const CRYSTALS = [
     { color:'blue',   shape:'star',     css:'c-blue',   name:'Синий' },
     { color:'purple', shape:'pentagon', css:'c-purple', name:'Фиолетовый' },
     { color:'pink',   shape:'octagon',  css:'c-pink',   name:'Розовый' },
-    { color:'white',  shape:'drop',     css:'c-white',  name:'Белый' }, // ← было heart
+    { color:'white',  shape:'drop',     css:'c-white',  name:'Белый' },
 ];
 
-// Джокер теперь использует форму VORTEX
 const JOKER_SHAPE = 'vortex';
-
 const JOKER_SLOT = 9;
 const STONE_SLOT = 10;
 const TOTAL_TEXTURE_SLOTS = 11;
@@ -807,6 +914,7 @@ const state = {
     hintCell: null, manualSeason: null, manualWeather: null,
     textures: new Array(TOTAL_TEXTURE_SLOTS).fill(null),
     lastSwapped: null,
+    musicEnabled: false,
 };
 
 const $ = id => document.getElementById(id);
@@ -828,6 +936,7 @@ const screenFlash = $('screenFlash');
 const STORAGE_KEY = 'crystalz_save_v2';
 const TEX_KEY = 'crystalz_textures_v2';
 const ATMO_KEY = 'crystalz_atmo';
+const MUSIC_KEY = 'crystalz_music';
 
 function loadProgress(){
     try {
@@ -881,6 +990,192 @@ function saveTextures(){
         }));
     } catch(e){ showToast('⚠️ Не хватило места'); }
 }
+function loadMusicPref(){
+    try {
+        state.musicEnabled = localStorage.getItem(MUSIC_KEY) === '1';
+    } catch(e){ state.musicEnabled = false; }
+}
+function saveMusicPref(){
+    try { localStorage.setItem(MUSIC_KEY, state.musicEnabled ? '1' : '0'); } catch(e){}
+}
+
+// ============================================================
+//  МУЗЫКА — приятная, колокольчиковая
+// ============================================================
+const music = {
+    ctx: null,
+    masterGain: null,
+    isPlaying: false,
+    nextNoteTime: 0,
+    timerId: null,
+    step: 0, // счётчик нот для мелодии
+    direction: 1, // направление движения мелодии
+    // Мажорная пентатоника в высоком регистре — звучит как музыкальная шкатулка
+    // C5, D5, E5, G5, A5, C6, D6, E6
+    scale: [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50, 1174.66, 1318.51],
+    // Аккомпанемент — басы C3, G3, A3, F3 (I-V-vi-IV)
+    bassLine: [130.81, 196.00, 220.00, 174.61],
+    tempo: 0.9, // быстрее, чем раньше
+
+    init(){
+        if(this.ctx) return;
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if(!AudioCtx) return;
+            this.ctx = new AudioCtx();
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.value = 0;
+            // Общий фильтр — убираем возможную резкость
+            const filter = this.ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 3500;
+            filter.Q.value = 0.5;
+            // Delay-эффект для «эха» — как в пещере кристаллов
+            const delay = this.ctx.createDelay();
+            delay.delayTime.value = 0.35;
+            const feedback = this.ctx.createGain();
+            feedback.gain.value = 0.25;
+            const delayGain = this.ctx.createGain();
+            delayGain.gain.value = 0.35;
+            // Маршрут: master → filter → destination
+            // И параллельно: master → delayGain → delay → feedback → delay (loop) → destination
+            this.masterGain.connect(filter);
+            filter.connect(this.ctx.destination);
+            filter.connect(delayGain);
+            delayGain.connect(delay);
+            delay.connect(feedback);
+            feedback.connect(delay);
+            delay.connect(this.ctx.destination);
+        } catch(e){
+            console.warn('Music init error', e);
+        }
+    },
+
+    // Колокольчик — быстрый attack, длинный decay, чистый тембр
+    playBell(freq, time, duration, volume){
+        if(!this.ctx) return;
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const g2 = this.ctx.createGain();
+        osc1.type = 'sine';
+        osc1.frequency.value = freq;
+        osc2.type = 'sine';
+        osc2.frequency.value = freq * 2.01; // чуть выше октавы — колокольчиковый обертон
+        g2.gain.value = 0.25;
+        // ADSR: мгновенная атака, плавный спад
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(volume, time + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+        osc1.connect(gain);
+        osc2.connect(g2);
+        g2.connect(gain);
+        gain.connect(this.masterGain);
+        osc1.start(time);
+        osc2.start(time);
+        osc1.stop(time + duration + 0.1);
+        osc2.stop(time + duration + 0.1);
+    },
+
+    // Мягкая бас-нота
+    playBass(freq, time, duration){
+        if(!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(0.09, time + 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        osc.start(time);
+        osc.stop(time + duration + 0.1);
+    },
+
+    scheduleNote(){
+        if(!this.isPlaying || !this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        // === Мелодия ===
+        // Двигаемся по шкале вверх или вниз, иногда прыгаем
+        if(Math.random() < 0.15){
+            // Случайный прыжок
+            this.step = Math.floor(Math.random() * this.scale.length);
+        } else {
+            // Плавное движение
+            this.step += this.direction;
+            if(this.step >= this.scale.length - 1){
+                this.step = this.scale.length - 2;
+                this.direction = -1;
+            } else if(this.step <= 0){
+                this.step = 1;
+                this.direction = 1;
+            }
+            // Иногда меняем направление
+            if(Math.random() < 0.3) this.direction *= -1;
+        }
+
+        const freq = this.scale[this.step];
+        const dur = 0.9 + Math.random() * 0.8;
+        const vol = 0.14 + Math.random() * 0.06;
+        this.playBell(freq, now, dur, vol);
+
+        // Иногда вторая нота с задержкой — «переливы»
+        if(Math.random() < 0.3){
+            const idx2 = Math.max(0, Math.min(this.scale.length - 1,
+                this.step + (Math.random() < 0.5 ? 1 : -1)));
+            const freq2 = this.scale[idx2];
+            this.playBell(freq2, now + 0.3, 0.7, vol * 0.7);
+        }
+
+        // === Аккомпанемент ===
+        // Бас каждые 4 ноты
+        if(this.step % 4 === 0){
+            const bassIdx = Math.floor((this.step / 4) % this.bassLine.length);
+            this.playBass(this.bassLine[bassIdx], now, 2.5);
+        }
+
+        this.nextNoteTime = now + this.tempo + Math.random() * 0.4;
+    },
+
+    start(){
+        this.init();
+        if(!this.ctx || this.isPlaying) return;
+        if(this.ctx.state === 'suspended') this.ctx.resume();
+        this.isPlaying = true;
+        this.step = Math.floor(Math.random() * 4) + 2; // средний регистр
+        this.direction = Math.random() < 0.5 ? 1 : -1;
+        this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+        this.masterGain.gain.linearRampToValueAtTime(0.5, this.ctx.currentTime + 2.5);
+        const tick = () => {
+            if(!this.isPlaying) return;
+            if(this.ctx.currentTime >= this.nextNoteTime){
+                this.scheduleNote();
+            }
+            this.timerId = setTimeout(tick, 150);
+        };
+        this.nextNoteTime = this.ctx.currentTime;
+        tick();
+    },
+
+    stop(){
+        if(!this.ctx || !this.isPlaying) return;
+        this.isPlaying = false;
+        this.masterGain.gain.cancelScheduledValues(this.ctx.currentTime);
+        this.masterGain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 1.8);
+        if(this.timerId){
+            clearTimeout(this.timerId);
+            this.timerId = null;
+        }
+    },
+
+    toggle(){
+        if(this.isPlaying) this.stop();
+        else this.start();
+        return this.isPlaying;
+    },
+};
 
 // ============================================================
 //  СЕЗОНЫ / ВРЕМЯ / ПОГОДА
@@ -1150,12 +1445,11 @@ function getBombBlastCells(grid, r, c){
 }
 
 // ============================================================
-//  RENDER — оптимизированный
+//  RENDER
 // ============================================================
 let cellSize = 40;
 let cellGap = 3;
 
-// Быстрый доступ к DOM-элементу клетки по координатам
 function getCellEl(r, c){
     return boardEl.children[r * COLS + c] || null;
 }
@@ -1199,7 +1493,6 @@ function renderBoard(){
     boardEl.appendChild(fragment);
 }
 
-// Обновление ОДНОЙ клетки
 function updateCell(r, c){
     const cell = getCellEl(r, c);
     if(!cell) return;
@@ -1218,7 +1511,6 @@ function updateCell(r, c){
     }
 }
 
-// Обновление выделения без пересборки DOM
 function updateSelection(){
     const prev = boardEl.querySelector('.cell.selected');
     if(prev) prev.classList.remove('selected');
@@ -1244,7 +1536,7 @@ function createCrystalEl(data, cellSize){
         if(data.isBomb) el.classList.add('bomb');
         if(data.isJoker){
             el.classList.add('joker');
-            el.classList.add('shape-' + JOKER_SHAPE); // vortex
+            el.classList.add('shape-' + JOKER_SHAPE);
         }
         let texIdx = data.isJoker ? JOKER_SLOT : data.colorIdx;
         const tex = state.textures[texIdx];
@@ -1411,7 +1703,7 @@ function cancelDrag(){
     clearDragTargets();
     clearDragging();
     state.selected = null;
-    renderBoard();
+    updateSelection();
 }
 function handleCellTap(r, c){
     const data = state.grid[r][c];
@@ -1454,28 +1746,65 @@ async function handleSwap(r1, c1, r2, c2){
         showToast(t('toast_stoneMove'));
         return;
     }
-    await animateSwap(r1, c1, r2, c2);
+
+    const cellAEl = getCellEl(r1, c1);
+    const cellBEl = getCellEl(r2, c2);
+    const elA = cellAEl ? cellAEl.querySelector('.crystal') : null;
+    const elB = cellBEl ? cellBEl.querySelector('.crystal') : null;
+
+    if(elA && elB){
+        const dx = (c2 - c1) * (cellSize + cellGap);
+        const dy = (r2 - r1) * (cellSize + cellGap);
+        elA.classList.add('animating');
+        elB.classList.add('animating');
+        elA.style.transition = 'transform .28s cubic-bezier(.34,1.56,.64,1)';
+        elB.style.transition = 'transform .28s cubic-bezier(.34,1.56,.64,1)';
+        elA.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+        elB.style.transform = `translate3d(${-dx}px, ${-dy}px, 0)`;
+        elA.style.zIndex = '5';
+        elB.style.zIndex = '5';
+        await sleep(280);
+        elA.style.transition = '';
+        elB.style.transition = '';
+        elA.style.zIndex = '';
+        elB.style.zIndex = '';
+    }
+
     swapCells(state.grid, r1, c1, r2, c2);
     state.lastSwapped = [
         {r:r1, c:c1, data: state.grid[r1][c1]},
         {r:r2, c:c2, data: state.grid[r2][c2]},
     ];
-    // Обновляем только две клетки — это ОЧЕНЬ быстро
     updateCell(r1, c1);
     updateCell(r2, c2);
+
+    const newElA = getCellEl(r1, c1)?.querySelector('.crystal');
+    const newElB = getCellEl(r2, c2)?.querySelector('.crystal');
+    if(newElA) newElA.classList.remove('animating');
+    if(newElB) newElB.classList.remove('animating');
 
     await sleep(30);
     const matches = findMatches(state.grid);
     if(matches.length === 0){
+        const rcA = getCellEl(r1, c1)?.querySelector('.crystal');
+        const rcB = getCellEl(r2, c2)?.querySelector('.crystal');
+        if(rcA && rcB){
+            const dx = (c1 - c2) * (cellSize + cellGap);
+            const dy = (r1 - r2) * (cellSize + cellGap);
+            rcA.style.transition = 'transform .28s cubic-bezier(.34,1.56,.64,1)';
+            rcB.style.transition = 'transform .28s cubic-bezier(.34,1.56,.64,1)';
+            rcA.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+            rcB.style.transform = `translate3d(${-dx}px, ${-dy}px, 0)`;
+            await sleep(280);
+        }
         swapCells(state.grid, r1, c1, r2, c2);
         state.lastSwapped = null;
         updateCell(r1, c1);
         updateCell(r2, c2);
-        await animateSwap(r2, c2, r1, c1);
-        const el1 = getCellEl(r1, c1)?.querySelector('.crystal');
-        const el2 = getCellEl(r2, c2)?.querySelector('.crystal');
-        if(el1){ el1.classList.add('shake'); setTimeout(()=>el1.classList.remove('shake'), 400); }
-        if(el2){ el2.classList.add('shake'); setTimeout(()=>el2.classList.remove('shake'), 400); }
+        const shakeA = getCellEl(r1, c1)?.querySelector('.crystal');
+        const shakeB = getCellEl(r2, c2)?.querySelector('.crystal');
+        if(shakeA){ shakeA.classList.add('shake'); setTimeout(()=>shakeA.classList.remove('shake'), 400); }
+        if(shakeB){ shakeB.classList.add('shake'); setTimeout(()=>shakeB.classList.remove('shake'), 400); }
         await sleep(400);
         state.animating = false;
         return;
@@ -1488,27 +1817,6 @@ async function handleSwap(r1, c1, r2, c2){
     state.lastSwapped = null;
     state.animating = false;
     if(!hasPossibleMove(state.grid)) await autoReshuffle();
-}
-
-async function animateSwap(r1, c1, r2, c2){
-    const el1 = getCellEl(r1, c1)?.querySelector('.crystal');
-    const el2 = getCellEl(r2, c2)?.querySelector('.crystal');
-    if(!el1 || !el2) return;
-    const dx = (c2 - c1) * (cellSize + cellGap);
-    const dy = (r2 - r1) * (cellSize + cellGap);
-    el1.style.transition = 'transform .25s cubic-bezier(.34,1.56,.64,1)';
-    el2.style.transition = 'transform .25s cubic-bezier(.34,1.56,.64,1)';
-    el1.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
-    el2.style.transform = `translate3d(${-dx}px, ${-dy}px, 0)`;
-    el1.style.zIndex = '5';
-    el2.style.zIndex = '5';
-    await sleep(250);
-    el1.style.transition = '';
-    el2.style.transition = '';
-    el1.style.transform = '';
-    el2.style.transform = '';
-    el1.style.zIndex = '';
-    el2.style.zIndex = '';
 }
 
 async function triggerJoker(r, c){
@@ -1527,7 +1835,6 @@ async function triggerJoker(r, c){
 
 async function explodeCells(cells, originR, originC, isJoker){
     const toRemove = [];
-    // Помечаем pop-анимацией ТОЛЬКО нужные клетки
     for(const {r, c} of cells){
         if(r < 0 || r >= ROWS || c < 0 || c >= COLS) continue;
         const data = state.grid[r][c];
@@ -1552,9 +1859,7 @@ async function explodeCells(cells, originR, originC, isJoker){
     }
     addScore(points, originR, originC);
     await sleep(450);
-    for(const {r, c} of toRemove){
-        state.grid[r][c] = null;
-    }
+    for(const {r, c} of toRemove) state.grid[r][c] = null;
     await applyGravityAndRefill();
     await sleep(150);
     const newMatches = findMatches(state.grid);
@@ -1617,7 +1922,7 @@ function addScore(points, r, c){
 }
 
 // ============================================================
-//  РАЗРЕШЕНИЕ МАТЧЕЙ
+//  РАЗРЕШЕНИЕ МАТЧЕЙ — с ФИКСОМ джокера
 // ============================================================
 async function resolveMatches(matches){
     const toRemove = new Set();
@@ -1661,7 +1966,6 @@ async function resolveMatches(matches){
         toRemove.delete(bp.r + ',' + bp.c);
     }
 
-    // Помечаем pop
     for(const key of toRemove){
         const [r, c] = key.split(',').map(Number);
         const cr = getCellEl(r, c)?.querySelector('.crystal');
@@ -1686,7 +1990,6 @@ async function resolveMatches(matches){
         state.grid[r][c] = null;
     }
 
-    // Взрывы бомб из линий
     for(const bp of bombsInLines){
         const cell = state.grid[bp.r] && state.grid[bp.r][bp.c];
         if(!cell || !cell.isBomb) continue;
@@ -1713,17 +2016,31 @@ async function resolveMatches(matches){
         await sleep(80);
     }
 
+    // === ФИКС: ставим спец-кристаллы и СРАЗУ обновляем DOM ===
     for(const s of specials){
         const target = state.grid[s.r] && state.grid[s.r][s.c];
         if(target && target.type === 'crystal' && !target.isBomb && !target.isJoker){
-            if(s.type === 'bomb'){ target.isBomb = true; }
-            else { target.isJoker = true; target.isBomb = false; }
+            if(s.type === 'bomb'){
+                target.isBomb = true;
+            } else {
+                target.isJoker = true;
+                target.isBomb = false;
+                // ВАЖНО: джокер должен стать "вихрем", а не остаться прежней формой
+                target.shape = JOKER_SHAPE;
+            }
         } else if(!target){
             const base = randCrystal();
-            if(s.type === 'bomb') base.isBomb = true;
-            else { base.isJoker = true; base.isBomb = false; }
+            if(s.type === 'bomb'){
+                base.isBomb = true;
+            } else {
+                base.isJoker = true;
+                base.isBomb = false;
+                base.shape = JOKER_SHAPE;
+            }
             state.grid[s.r][s.c] = base;
         }
+        // Обновляем DOM для этой клетки — теперь текстура джокера применится
+        updateCell(s.r, s.c);
     }
 
     await applyGravityAndRefill();
@@ -1733,7 +2050,6 @@ async function resolveMatches(matches){
 }
 
 async function applyGravityAndRefill(){
-    // Перемещаем логически + запоминаем падения
     const fallMap = {};
     for(let c = 0; c < COLS; c++){
         let writeRow = ROWS - 1;
@@ -1752,12 +2068,10 @@ async function applyGravityAndRefill(){
             fallMap[r + ',' + c] = writeRow + 1;
         }
     }
-    // Обновляем только те клетки, куда что-то упало
     for(const key in fallMap){
         const [r, c] = key.split(',').map(Number);
         updateCell(r, c);
     }
-    // Анимация падения
     for(const key in fallMap){
         const [r, c] = key.split(',').map(Number);
         const cr = getCellEl(r, c)?.querySelector('.crystal');
@@ -1816,9 +2130,6 @@ async function autoReshuffle(){
 }
 function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 
-// ============================================================
-//  ПОДСКАЗКА
-// ============================================================
 function findHint(){
     for(let r = 0; r < ROWS; r++){
         for(let c = 0; c < COLS; c++){
@@ -1858,9 +2169,6 @@ function showHint(){
     }
 }
 
-// ============================================================
-//  TOAST
-// ============================================================
 function showToast(text){
     const old = document.querySelector('.toast');
     if(old) old.remove();
@@ -2033,6 +2341,73 @@ $('textureModal').addEventListener('click', e => {
 });
 
 // ============================================================
+//  CHANGELOG
+// ============================================================
+function buildChangelog(){
+    const list = $('changelogList');
+    list.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+    for(const ver of CHANGELOG){
+        const li = document.createElement('li');
+        li.className = 'changelog-version' + (ver.latest ? ' latest' : '');
+        const header = document.createElement('div');
+        header.className = 'changelog-header';
+        const verEl = document.createElement('span');
+        verEl.className = 'changelog-ver' + (ver.latest ? ' latest' : '');
+        verEl.textContent = 'v' + ver.version;
+        const dateEl = document.createElement('span');
+        dateEl.className = 'changelog-date';
+        dateEl.textContent = ver.date;
+        header.appendChild(verEl);
+        header.appendChild(dateEl);
+        li.appendChild(header);
+        const items = document.createElement('ul');
+        items.className = 'changelog-items';
+        for(const it of ver.items){
+            const item = document.createElement('li');
+            item.className = it.type;
+            item.textContent = it.text;
+            items.appendChild(item);
+        }
+        li.appendChild(items);
+        fragment.appendChild(li);
+    }
+    list.appendChild(fragment);
+}
+
+$('btnChangelog').addEventListener('click', () => {
+    buildChangelog();
+    $('changelogModal').classList.add('active');
+});
+$('btnCloseChangelog').addEventListener('click', () => {
+    $('changelogModal').classList.remove('active');
+});
+$('changelogModal').addEventListener('click', e => {
+    if(e.target === $('changelogModal')) $('changelogModal').classList.remove('active');
+});
+
+// ============================================================
+//  МУЗЫКА — кнопки
+// ============================================================
+function updateMusicButtons(){
+    const btn1 = $('btnMusic');
+    const btn2 = $('btnMusicGame');
+    [btn1, btn2].forEach(b => {
+        if(!b) return;
+        b.classList.toggle('active', state.musicEnabled);
+        b.textContent = state.musicEnabled ? '🔊' : '🎵';
+    });
+}
+function toggleMusic(){
+    state.musicEnabled = music.toggle();
+    saveMusicPref();
+    updateMusicButtons();
+    showToast(state.musicEnabled ? t('toast_musicOn') : t('toast_musicOff'));
+}
+$('btnMusic').addEventListener('click', toggleMusic);
+$('btnMusicGame').addEventListener('click', toggleMusic);
+
+// ============================================================
 //  ЗАПУСК ИГРЫ
 // ============================================================
 function startGame(mode){
@@ -2064,9 +2439,6 @@ function goToMenu(){
     saveProgress();
 }
 
-// ============================================================
-//  СОБЫТИЯ
-// ============================================================
 $('btnClassic').addEventListener('click', () => startGame('classic'));
 $('btnStones').addEventListener('click', () => startGame('stones'));
 $('btnMenu').addEventListener('click', goToMenu);
@@ -2113,6 +2485,7 @@ loadLanguage();
 loadProgress();
 loadTextures();
 loadAtmo();
+loadMusicPref();
 
 if(state.manualWeather === 'snow' && state.manualSeason && state.manualSeason !== 'winter'){
     state.manualWeather = 'clear';
@@ -2122,6 +2495,19 @@ if(state.manualWeather === 'snow' && state.manualSeason && state.manualSeason !=
 updateHUD();
 applyTranslations();
 applyMenuAtmosphere();
+updateMusicButtons();
+
+if(state.musicEnabled){
+    const startOnFirstClick = () => {
+        if(state.musicEnabled && !music.isPlaying){
+            music.start();
+        }
+        document.removeEventListener('click', startOnFirstClick);
+        document.removeEventListener('touchstart', startOnFirstClick);
+    };
+    document.addEventListener('click', startOnFirstClick, {once:true});
+    document.addEventListener('touchstart', startOnFirstClick, {once:true});
+}
 
 setInterval(() => {
     if(!state.gameActive) applyMenuAtmosphere();
